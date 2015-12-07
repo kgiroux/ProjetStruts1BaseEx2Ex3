@@ -7,7 +7,7 @@
 <struts-config>
 
 <form-beans>
-<form-bean name="personneForm" type="fr.esigelec.projetStruts.forms.PersonneForm"/>
+	<form-bean name="personneForm" type="fr.esigelec.projetStruts.forms.PersonneForm"/>
 </form-beans>
 
 
@@ -25,13 +25,13 @@ REMARQUE : les attributs forward,include et type sont mutuellement exclusifs
  -->
  <!--  scope=session permettra de retrouver le formulaire rempli si affichage de celui ci -->
 <action scope="request" path="/AjouterPersonne"  name="personneForm" type="fr.esigelec.projetStruts.controleur.AjouterPersonneAction" input="/">
-<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
-<forward name="erreur" path="/WEB-INF/jsp/pageErreur.jsp"></forward>
+	<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
+	<forward name="erreur" path="/WEB-INF/jsp/pageErreur.jsp"></forward>
 </action>
 
 
 <action scope="request" path="/SupprimerPersonne"  type="fr.esigelec.projetStruts.controleur.SupprimerPersonneAction">
-<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
+	<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
 </action>
 
 <!-- redirection simple, sans avoir besoin de coder Action -->
