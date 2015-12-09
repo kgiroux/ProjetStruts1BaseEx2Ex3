@@ -21,7 +21,8 @@
 <td><html:text property="prenom" /> <b style="color:red"><html:errors property="erreur.prenom"/></b></td>
 </tr>
 <tr>
-<td></td>
+<td>Age :</td>
+<td><html:text property="age" /> <b style="color:red"><html:errors property="erreur.age"/></b></td>
 <td>
 <html:submit value="envoyer" />
 </td>

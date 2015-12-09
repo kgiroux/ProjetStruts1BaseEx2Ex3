@@ -28,19 +28,11 @@ REMARQUE : les attributs forward,include et type sont mutuellement exclusifs
 	<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
 	<forward name="erreur" path="/WEB-INF/jsp/pageErreur.jsp"></forward>
 </action>
-
-
 <action scope="request" path="/SupprimerPersonne"  type="fr.esigelec.projetStruts.controleur.SupprimerPersonneAction">
 	<forward name="succes" path="/WEB-INF/jsp/listePersonnes.jsp"></forward>
 </action>
-
 <!-- redirection simple, sans avoir besoin de coder Action -->
 <action path="/RetourIndex"  type="org.apache.struts.actions.ForwardAction" parameter="/index.jsp" /> 
 </action-mappings>
-
 <message-resources parameter="mesMessages"></message-resources>
-
-
-
-
 </struts-config>
