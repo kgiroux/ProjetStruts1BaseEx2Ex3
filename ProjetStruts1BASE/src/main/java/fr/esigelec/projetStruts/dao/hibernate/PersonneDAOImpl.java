@@ -1,39 +1,31 @@
 package fr.esigelec.projetStruts.dao.hibernate;
 
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import fr.esigelec.projetStruts.dao.hibernate.HibernateUtil;
 import fr.esigelec.projetStruts.dao.IPersonneDAO;
 import fr.esigelec.projetStruts.dto.Personne;
 
 public class PersonneDAOImpl implements IPersonneDAO {
-
-	
 	/**
 	 * Ajoute une personne dans la BDD
 	 * @param p la personne à ajouter
 	 */
 	@Override
 	public void ajouter(Personne p) {
-		/*PreparedStatement stmt=null;
-		Connection con=ConnexionBDDPool.getInstance().getConnection();
-		try {
-			stmt=con.prepareStatement("INSERT INTO personne (nom,prenom) VALUES (?,?)");
-			stmt.setString(1,p.getNom());
-			stmt.setString(2,p.getPrenom());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			
-			ConnexionBDDPool.close(stmt);
-		}*/
+		if(p != null){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.save(p);
+			session.getTransaction().commit();
+			session.close();
+		}else{
+			throw new IllegalArgumentException("Null Parameter");
+		}
 	}
 
 	/**
@@ -42,24 +34,37 @@ public class PersonneDAOImpl implements IPersonneDAO {
 	 */
 	@Override
 	public List<Personne> getListe() {
-		List<Personne> retour=new ArrayList<Personne>();
-		/*PreparedStatement stmt=null;
-		Connection con=ConnexionBDDPool.getInstance().getConnection();
-		try {
-			stmt=con.prepareStatement("SELECT * FROM  personne");
-			ResultSet rs=stmt.executeQuery();
-			while(rs.next()){
-				retour.add(new Personne(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom")));
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			ConnexionBDDPool.close(stmt);
-		}*/
-		return retour;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		String hql = "from Personne";
+		Query query = session.createQuery(hql);
+		List<Personne> personne=query.list();
+		session.getTransaction().commit();
+		session.close();
+		return personne;
 	}
-
+	
+	/**
+	 * Récupère la liste des personne de la BDD ayant le même nom
+	 * @param personne dont le nom sert de recherche
+	 * @return la liste des personnes possédant le même nom
+	 */
+	@Override
+	public List<Personne> getListeNom(String nom) {
+		if(!("".equals(nom))){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			String hql = "from Personne where nom =:name";
+			Query query = session.createQuery(hql);
+			query.setText("name", nom);
+			List<Personne> p = query.list();
+			session.getTransaction().commit();
+			session.close();
+		return p;
+		}else{
+			throw new InvalidParameterException();
+		}
+	}
 
 	/**
 	 * Supprime une personne de la BDD à partir de son id
@@ -67,20 +72,22 @@ public class PersonneDAOImpl implements IPersonneDAO {
 	 */
 	@Override
 	public void supprimer(int id) {
-		/*PreparedStatement stmt=null;
-		Connection con=ConnexionBDDPool.getInstance().getConnection();
-		try {
-			stmt=con.prepareStatement("DELETE FROM personne WHERE id=?");
-			stmt.setInt(1,id);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		String hql = "from Personne where id =:idt";
+		Query query = session.createQuery(hql);
+		query.setInteger("idt", id);
+		Personne p = (Personne) query.list().get(0);
+		session.getTransaction().commit();
+		session.beginTransaction();
+		try{
+			session.delete(p);
+			session.getTransaction().commit();
+		}catch(Exception e){
 			e.printStackTrace();
+			session.getTransaction().rollback();
 		}finally{
-			ConnexionBDDPool.close(stmt);
-		}*/
-		
+			session.close();
+		}
 	}
-
-	
-
 }

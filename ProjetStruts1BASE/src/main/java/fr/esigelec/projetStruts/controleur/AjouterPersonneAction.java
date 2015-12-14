@@ -24,7 +24,7 @@ public class AjouterPersonneAction extends Action {
 
 			Personne p=new Personne(f.getNom(),f.getPrenom());
 			
-			IPersonneDAO personneDAO=DAOFactory.getDAOFactory(DAOFactory.JDBC).getPersonneDAO();
+			IPersonneDAO personneDAO=DAOFactory.getDAOFactory(DAOFactory.HIBERNATE).getPersonneDAO();
 			personneDAO.ajouter(p);
 			request.setAttribute("liste",personneDAO.getListe());
 			

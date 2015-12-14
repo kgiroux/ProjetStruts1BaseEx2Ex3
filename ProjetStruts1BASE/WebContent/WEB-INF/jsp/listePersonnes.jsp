@@ -9,33 +9,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Liste</title>
+<title><bean:message key="label.liste"/></title>
 </head>
 <body>
-<h1>Liste des clients SANS taglibs de struts :</h1>
+<h1><bean:message key="label.listeNoTaglibs"/></h1>
 <div>
 <%
 List<Personne> l=(List<Personne>)request.getAttribute("liste");
 for(Personne p:l){ %>
-<%=p.getId()%> - <%=StringEscapeUtils.escapeHtml(p.toString()) %>
+<%=p.getId()%> - 
+<a href="VoirFamille.do?nom=<%=p.getNom() %>" title="famille">
+	<%=p.getNom()%>
+</a>
+<%=p.getPrenom()%>
 <a href="SupprimerPersonne.do?id=<%=p.getId() %>" title="supprimer">X</a><br/>
 
 <%} %>
-<a href="RetourIndex.do">Ajouter une nouvelle personne</a>
+<a href="RetourIndex.do"><bean:message key="label.ajouterBtn"/></a>
 </div>
 <div>
 
-<h1>Liste des clients AVEC taglibs de struts :</h1>
+<h1><bean:message key="label.listeTaglibs"/></h1>
 
 <logic:iterate name="liste" id="pers" >
 <bean:write name="pers" property="id"/> - 
-<bean:write name="pers" property="nom"/>
+<html:link action="VoirFamille" title="famille"  paramId="nom" paramName="pers" paramProperty="nom">
+	<bean:write name="pers" property="nom"/>
+</html:link>
 <bean:write name="pers" property="prenom"/>
 <html:link action="SupprimerPersonne" title="supprimer"  paramId="id" paramName="pers" paramProperty="id">X</html:link>
 <br/>
 
 </logic:iterate>
-<html:link action="RetourIndex">Ajouter une nouvelle personne</html:link>
+<html:link action="RetourIndex"><bean:message key="label.ajouterBtn"/></html:link>
 </div>
 <%--autre exemple d'affichage de l'attribut liste --%>
 ${liste}
