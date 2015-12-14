@@ -22,7 +22,7 @@ public class AjouterPersonneAction extends Action {
 
 			PersonneForm f=(PersonneForm)form;
 
-			Personne p=new Personne(f.getNom(),f.getPrenom());
+			Personne p=new Personne(f.getNom(),f.getPrenom(),f.getAge());
 			
 			IPersonneDAO personneDAO=DAOFactory.getDAOFactory(DAOFactory.HIBERNATE).getPersonneDAO();
 			personneDAO.ajouter(p);

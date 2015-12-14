@@ -17,22 +17,23 @@ public class PersonneDAOImpl implements IPersonneDAO {
 	
 	/**
 	 * Ajoute une personne dans la BDD
-	 * @param p la personne à ajouter
+	 * @param p la personne ï¿½ ajouter
 	 * @throws SQLException 
 	 */
 	@Override
 	public void ajouter(Personne p) throws SQLException {
 		PreparedStatement stmt=null;
 		Connection con=ConnexionBDDPool.getInstance().getConnection();
-		stmt=con.prepareStatement("INSERT INTO personne (nom,prenom) VALUES (?,?)");
+		stmt=con.prepareStatement("INSERT INTO personne (nom,prenom,age) VALUES (?,?,?)");
 		stmt.setString(1,p.getNom());
 		stmt.setString(2,p.getPrenom());
+		stmt.setInt(3, p.getAge());
 		stmt.executeUpdate();
 		ConnexionBDDPool.close(stmt);
 	}
 
 	/**
-	 * Récupère la liste des personne de la BDD
+	 * Rï¿½cupï¿½re la liste des personne de la BDD
 	 * @return la liste des personnes
 	 * @throws SQLException 
 	 */
@@ -44,7 +45,7 @@ public class PersonneDAOImpl implements IPersonneDAO {
 		stmt=con.prepareStatement("SELECT * FROM  personne");
 		ResultSet rs=stmt.executeQuery();
 		while(rs.next()){
-			retour.add(new Personne(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom")));		
+			retour.add(new Personne(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getInt("age")));		
 		}
 		ConnexionBDDPool.close(stmt);
 		
@@ -53,9 +54,9 @@ public class PersonneDAOImpl implements IPersonneDAO {
 	
 	
 	/**
-	 * Récupère la liste des personne de la BDD ayant le même nom
+	 * Rï¿½cupï¿½re la liste des personne de la BDD ayant le mï¿½me nom
 	 * @param personne dont le nom sert de recherche
-	 * @return la liste des personnes possédant le même nom
+	 * @return la liste des personnes possï¿½dant le mï¿½me nom
 	 * @throws SQLException 
 	 */
 	@Override
@@ -67,7 +68,7 @@ public class PersonneDAOImpl implements IPersonneDAO {
 		stmt.setString(1, nom);
 		ResultSet rs=stmt.executeQuery();
 		while(rs.next()){
-			retour.add(new Personne(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom")));
+			retour.add(new Personne(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getInt("age")));
 		}
 		ConnexionBDDPool.close(stmt);
 		return retour;
@@ -75,8 +76,8 @@ public class PersonneDAOImpl implements IPersonneDAO {
 
 
 	/**
-	 * Supprime une personne de la BDD à partir de son id
-	 * @param id id de la personne à supprimer
+	 * Supprime une personne de la BDD ï¿½ partir de son id
+	 * @param id id de la personne ï¿½ supprimer
 	 * @throws SQLException 
 	 */
 	@Override
