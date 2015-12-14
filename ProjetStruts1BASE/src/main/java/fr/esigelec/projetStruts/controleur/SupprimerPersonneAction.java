@@ -22,7 +22,7 @@ public class SupprimerPersonneAction extends Action {
 
 		int id=new Integer(request.getParameter("id"));
 		
-		IPersonneDAO personneDAO=DAOFactory.getDAOFactory(DAOFactory.JDBC).getPersonneDAO();
+		IPersonneDAO personneDAO=DAOFactory.getDAOFactory(DAOFactory.HIBERNATE).getPersonneDAO();
 		personneDAO.supprimer(id);
 		request.setAttribute("liste",personneDAO.getListe());
 
